@@ -1,15 +1,25 @@
 package com.lx.myconstellation;
 
-import org.apache.http.client.HttpClient;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.lx.utils.HTTPUtils;
-import com.lx.utils.WebServerAsy;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.lx.model.DayResponses;
+import com.lx.model.ResultResponses;
+import com.lx.utils.HTTPUtils;
+import com.lx.utils.WebServerAsy;
 
 public class ShowActivity extends Activity {
 
@@ -21,6 +31,31 @@ public class ShowActivity extends Activity {
 	private Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			Log.d("星座运势", msg.obj.toString());
+			DayResponses dayResponses = new DayResponses();
+			// List<ResultResponses> list = new ArrayList<ResultResponses>();
+			// JSONArray jsonArray = new JSONArray(msg.obj.toString());
+			// for (int i = 0; i < jsonArray.length(); i++) {
+			// ResultResponses responses = new ResultResponses();
+			// JSONObject jsonObject=jsonArray.getJSONObject(i);
+			// if(""!=jsonObject.get("title")){
+			// responses.setTitle(jsonObject.get("title").toString().trim());
+			// }
+			// if(""!=jsonObject.get("rank")){
+			// responses.setRank(jsonObject.get("rank").toString().trim());
+			// }
+			// if(""!=jsonObject.get("value")){
+			// responses.setValues(jsonObject.get("value").toString().trim());
+			// }
+			// list.add(responses);
+			// }
+			
+			Gson gson = new Gson();
+			Type type = new TypeToken<List<ResultResponses>>() {
+			}.getType();
+			List<ResultResponses> list = gson
+					.fromJson(msg.obj.toString(), type);
+			initData(list);
+			
 		};
 	};
 
@@ -50,5 +85,14 @@ public class ShowActivity extends Activity {
 		new WebServerAsy(this, mHandler).sendExecuteDialog(new String[] {
 				"day", "" }, HTTPUtils.DAY_CONSTELLATION);
 
+	}
+	
+	private void initData(List<ResultResponses> list) {
+		healthView.setText(list.get(4).getValues());
+		workView.setText(list.get(5).getValues());
+		numberView.setText(list.get(6).getValues());
+		colorView.setText(list.get(7).getValues());
+		supeiView.setText(list.get(8).getValues());
+		allView.setText(list.get(9).getValues());
 	}
 }
