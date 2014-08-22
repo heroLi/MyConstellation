@@ -1,0 +1,23 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center"
+    android:background="@drawable/bg"
+    android:orientation="vertical" >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="选择查看的星座"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        />
+    <GridView
+        android:id="@+id/myGriView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:numColumns="4"
+        android:horizontalSpacing="10dp"
+        android:verticalSpacing="20dp"
+        />
+
+</LinearLayout>
